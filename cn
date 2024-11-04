@@ -1,0 +1,450 @@
+# Install Git (if needed)
+sudo apt update
+sudo apt install git
+
+# Clone the repository
+git clone https://github.com/keshaz89/CN.git
+
+# Change directory to the cloned repository
+cd CN
+
+TCP:-
+import socket
+server_socket=socket.socket()
+server_socket.bind(('127.0.0.1',65432))
+server_socket.listen()
+print('server is listening..')
+conn,_= server_socket.accept()
+print(f'Received :{conn.recv(1024).decode()}')
+conn.sendall(' hello from server'.encode())
+conn.close()
+import socket
+client_socket = socket.socket()
+client_socket.connect(('127.0.0.1', 65432))
+client_socket.sendall('Hello from the client!'.encode())
+print(f'Received: {client_socket.recv(1024).decode()}')
+client_socket.close()
+
+
+
+UDP:-
+import socket  # Import the socket library
+
+# Create and bind UDP socket
+udp_server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+udp_server_socket.bind(('127.0.0.1', 65432))  # Localhost and port
+
+print("UDP server waiting for messages...")
+
+while True:
+    message, client_address = udp_server_socket.recvfrom(1024)  # Receive message
+    print(f"Received: {message.decode()} from {client_address}")
+    udp_server_socket.sendto(b"Message received", client_address)  # Send response
+
+
+
+import socket  # Import the socket library
+
+# Create UDP socket
+udp_client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_address = ('127.0.0.1', 65432)  # Localhost and port
+
+message = "Hello, UDP server!"  # Prepare message
+udp_client_socket.sendto(message.encode(), server_address)  # Send message
+
+response, _ = udp_client_socket.recvfrom(1024)  # Receive response
+print(f"Response: {response.decode()}")
+
+udp_client_socket.close()  # Close socket
+sliding window:_
+sudo apt update
+sudo apt install ns2
+create a .tcl file 
+to run the code open the terminal and type ns nameofile.tcl
+set ns [new Simulator]
+$ns color 1 Blue
+# set nam output file
+set nf [open out.nam w]
+$ns namtrace-all $nf
+
+# destructor
+proc finish {} {
+global ns nf
+$ns flush-trace
+close $nf
+exec nam out.nam &
+exit 0
+}
+
+# create two new nodes and create labels for them
+set n0 [$ns node]
+set n1 [$ns node]
+$ns at 0.0 "$n0 label \" Sender \" "
+$ns at 0.0 "$n1 label \"Receiver\" "
+
+
+# set up a new duplex link
+$ns duplex-link $n0 $n1 1Mb 200ms DropTail
+$ns duplex-link-op $n0 $n1 orient right
+
+# create a new TCP agent
+set tcp [new Agent/TCP]
+# attach the agent to first node
+$ns attach-agent $n0 $tcp
+$tcp set fid_ 1
+$tcp set window_ 1
+$tcp set maxcwnd_ 1
+$ns add-agent-trace $tcp tcp
+$ns monitor-agent-trace $tcp
+set tcpsink [new Agent/TCPSink]
+$ns attach-agent $n1 $tcpsink
+
+$ns connect $tcp $tcpsink
+set ftp [new Application/FTP]
+$ftp attach-agent $tcp
+
+$ns at 0.5 "$ftp start"
+$ns at 3.0 "$ns detach-agent $n0 $tcp ; $ns detach-agent $n1 $tcpsink "
+$ns at 1.0 "$ns trace-annotate \"send packet 1\""
+$ns at 1.4 "$ns trace-annotate \"recieve ack 1\""
+$ns at 2.0 "$ns trace-annotate \"send packet 2\""
+$ns at 2.5 "$ns trace-annotate \"receive ack 2\""
+$ns at 3.2 "$ns trace-annotate \"send packet 3\""
+$ns at 3.5 "$ns trace-annotate \"receive ack 3\""
+$ns at 3.8 "$ns trace-annotate \"send packet 4\""
+$ns at 4.0 "finish"
+$ns run
+
+
+
+
+STOP AND WAIT:-
+set ns [new Simulator]
+set nf [open out.nam w]
+$ns namtrace-all $nf
+
+proc finish {} {
+    global ns nf
+    $ns flush-trace
+    close $nf
+    exec nam out.nam &
+    exit 0
+}
+
+# Create nodes
+set n0 [$ns node]
+set n1 [$ns node]
+$ns at 0.0 "$n0 label \"Sender\""
+$ns at 0.0 "$n1 label \"Receiver\""
+
+# Set up duplex link
+$ns duplex-link $n0 $n1 1Mb 200ms DropTail
+
+# Set up TCP agent with Stop-and-Wait
+set tcp [new Agent/TCP]
+$ns attach-agent $n0 $tcp
+set tcpsink [new Agent/TCPSink]
+$ns attach-agent $n1 $tcpsink
+$ns connect $tcp $tcpsink
+
+# FTP Application
+set ftp [new Application/FTP]
+$ftp attach-agent $tcp
+
+# Simulation events
+$ns at 0.5 "$ftp start"
+$ns at 4.0 "finish"
+$ns run
+
+sudo apt update
+sudo apt install telnet telnetd
+sudo systemctl start telnet
+sudo systemctl enable telnet
+sudo ufw allow 23/tcp
+hostname -I  # to find the IP address
+telnet 192.168.1.110
+pw : current directory
+ls -1: list file in current directory 
+
+Installation :
+sudo apt-get install vsftpd
+sudo systemctl enable vsftpd
+sudo systemctl start vsftpd
+
+Working :
+ftp ip(bajuwale ka)
+username and pass (bajuwale ka)
+
+get filename.extension (bajuwale ki file apne me lane k lie)
+put filename.extension (bajuwale k pc me bhejne k lie)
+
+bye
+
+FTP
+Install vsftpd:
+sudo apt update
+sudo apt install vsftpd
+
+Start and enable server:
+sudo systemctl start vsftpd
+sudo systemctl enable vsftpd
+
+configure(optional):
+sudo nano /etc/vsftpd.conf
+anonymous_enable=YES
+local_enable=YES
+write_enable=YES
+pasv_min_port=10000
+pasv_max_port=10100
+
+restart
+sudo systemctl restart vsftpd
+
+Add user (if anonymous disabled)
+sudo adduser ftpuser
+sudo passwd ftpuser
+
+Open FTP Client and Connect to the Server:
+ftp 192.168.1.100
+Log In: Enter the username and password when prompted (e.g., ftpuser and its password).
+
+List files
+ls
+Change directory
+cd <directory_name>
+Add file
+put <local_file_path>
+
+put /home/user/example.txt
+Get file
+get example.txt
+Put multiple files
+mput .txt
+Get multiple files
+mget .txt
+Make directory
+mkdir <directory_name>
+Delete file
+delete <remote_file_name>
+Exit 
+bye
+
+
+Here's a clearer summary with each command's function, example, and usage:
+
+---
+
+### 1. **ping**
+   - **Function**: Checks network connectivity to a host by sending ICMP echo requests and listening for replies. It verifies if a remote host is reachable and measures the time taken for round-trip packets.
+   - **Example**: `ping www.google.com`
+   - **Usage**: Useful for testing connectivity and measuring network latency.
+
+---
+
+### 2. **traceroute**
+   - **Function**: Displays the route packets take to reach a host, showing each hop along the path. It helps identify where delays or losses occur in the network.
+   - **Example**: `sudo traceroute google.com`
+   - **Usage**: Useful for diagnosing network issues by pinpointing packet delays or losses.
+
+---
+
+### 3. **nslookup**
+   - **Function**: Queries DNS servers to find the IP address of a domain name or vice versa.
+   - **Examples**: 
+     - `nslookup google.com`
+     - `nslookup 8.9.12.3`
+   - **Usage**: Helpful for DNS troubleshooting and resolving domain names.
+
+---
+
+### 4. **netstat**
+   - **Function**: Displays network connections, routing tables, and interface statistics, which can help monitor activity and diagnose network problems.
+   - **Examples**:
+     - `netstat -a` – Shows all active network connections.
+     - `netstat -tuln` – Displays TCP/UDP listening ports and numeric addresses.
+   - **Usage**: Commonly used for monitoring network activity and identifying network issues.
+
+---
+
+### 5. **ARP (Address Resolution Protocol)**
+   - **Function**: Maps an IP address to a physical MAC address on a local network, allowing devices to communicate within the same network.
+   - **Example**: `arp -a`
+   - **Usage**: Used to view the ARP cache and manage IP-to-MAC address mappings.
+
+---
+
+### 6. **RARP (Reverse Address Resolution Protocol)**
+   - **Function**: Maps a MAC address to an IP address, allowing diskless devices to request their IP address from a RARP server on the network.
+   - **Usage**: Primarily for older or diskless networked devices to obtain IP addresses, though it is largely replaced by DHCP.
+
+---
+
+### 7. **ip**
+   - **Function**: Manages network settings, such as viewing and configuring IP addresses and network interfaces. Replaces `ifconfig` with support for both IPv4 and IPv6.
+   - **Example**: `ip a` – Displays current network interfaces and IP addresses.
+   - **Usage**: Useful for configuring and managing network interfaces and routing.
+
+---
+
+### 8. **ifconfig**
+   - **Function**: Configures network interfaces, primarily used for assigning IP addresses and enabling/disabling interfaces. Although deprecated, it’s still available on some systems.
+   - **Example**: `ifconfig`
+   - **Usage**: Used for managing network interfaces, though it has mostly been replaced by `ip`.
+
+---
+
+### 9. **dig (Domain Information Groper)**
+   - **Function**: A DNS lookup utility that queries DNS servers for information, providing detailed results for various DNS records.
+   - **Example**: `dig google.com`
+   - **Usage**: Commonly used for advanced DNS troubleshooting and querying specific DNS records.
+
+---
+
+### 10. **route**
+   - **Function**: Displays and manipulates the IP routing table. Allows users to view current routes, add new routes, or delete existing routes to control network traffic.
+   - **Example**: `route -n` – Displays the IP routing table in numeric format.
+   - **Usage**: Used to manage static routes and configure default gateways.
+
+---
+
+Each command has specific applications in networking, from diagnosing connectivity and DNS issues to managing network interfaces and routing traffic.
+
+
+
+sudo apt-get update
+sudo apt-get install build-essential autoconf automake libx11-dev libxmu-dev
+# Create a simulator object
+set ns [new Simulator]
+# Define different colors for data flows
+$ns color 1 Blue
+$ns color 2 Red
+# Open the nam trace file
+set nf [open out.nam w]
+$ns namtrace-all $nf
+# Create two nodes
+set n0 [$ns node]
+set n1 [$ns node]
+# Create a duplex link between the nodes
+$ns duplex-link $n0 $n1 1Mb 10ms DropTail
+# Create a UDP agent and attach it to node n0
+set udp0 [new Agent/UDP]
+$ns attach-agent $n0 $udp0
+# Create a Null agent (a sink) and attach it to node n1
+set null1 [new Agent/Null]
+$ns attach-agent $n1 $null1
+# Connect the UDP agent to the Null agent
+$ns connect $udp0 $null1
+# Create a CBR traffic generator and attach it to the UDP agent
+set cbr [new Application/Traffic/CBR]
+$cbr set packetSize_ 500
+$cbr set interval_ 0.005
+$cbr attach-agent $udp0
+# Schedule the traffic to start at time 0.5 seconds and stop at 4.5 seconds
+$ns at 0.5 &quot;$cbr start&quot;
+$ns at 4.5 &quot;$cbr stop&quot;
+# Schedule the finish procedure to be called after 5 seconds
+$ns at 5.0 &quot;finish&quot;
+# Define a &#39;finish&#39; procedure
+proc finish {} {
+global ns nf
+$ns flush-trace
+# Close the trace file
+
+close $nf
+# Execute nam on the trace file
+exec nam out.nam &amp;
+exit 0
+}
+# Run the simulation
+$ns run
+
+Build and Install:
+
+Navigate to the directory where you downloaded NS2 and run:
+bash
+Copy code
+./configure
+make
+sudo make install
+Set Environment Variables:
+
+You may need to set up environment variables in your ~/.bashrc or ~/.bash_profile:
+bash
+Copy code
+export PATH=$PATH:/usr/local/ns2/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/ns2/lib
+Run the Simulation:
+
+Once installed, you can run the provided Tcl script using:
+bash
+Copy code
+ns your_script_name.tcl
+
+Here are the commands and steps to use Wireshark to understand the operation of TCP/IP layers:
+
+### Steps and Commands
+
+1. **Install Wireshark** (if not installed):
+   ```bash
+   sudo apt update
+   sudo apt install wireshark
+   ```
+
+2. **Run Wireshark**:
+   ```bash
+   sudo wireshark
+   ```
+
+3. **Capture Traffic**:
+   - Select the network interface (e.g., `eth0`, `wlan0`) and click on **Start**.
+
+4. **Filter for Ethernet Layer**:
+   - Use the filter:
+     ```
+     eth
+     ```
+
+5. **Inspect Frame Details**:
+   - Click on any captured packet to view the **Frame header**, **Frame size**, etc.
+
+6. **Filter for Data Link Layer**:
+   - Use the filter:
+     ```
+     arp
+     ```
+
+7. **Inspect ARP Details**:
+   - Check **MAC address** and **ARP bindings**.
+
+8. **Filter for Network Layer**:
+   - Use the filter:
+     ```
+     ip
+     ```
+
+9. **Inspect IP Packet Details**:
+   - View **IP header**, **fragmentation**, and **ICMP** packets with:
+     ```
+     icmp
+     ```
+
+10. **Filter for Transport Layer**:
+    - Use the filter:
+      ```
+      tcp
+      ```
+
+11. **Inspect TCP Handshake**:
+    - Analyze the TCP handshake segments (SYN, SYN-ACK, ACK).
+
+12. **Filter for Application Layer**:
+    - Use the filter:
+      ```
+      http
+      ```
+
+13. **Inspect HTTP Details**:
+    - View **HTTP header formats** and related traffic.
+
+### Stop Capturing
+- Click on the **Stop** button in Wireshark to stop capturing traffic.
