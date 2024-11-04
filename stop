@@ -1,4 +1,7 @@
-
+sudo apt update
+sudo apt install ns2
+create a .tcl file 
+to run the code open the terminal and type ns nameofile.tcl
 set ns [new Simulator]
 set nf [open out.nam w]
 $ns namtrace-all $nf
