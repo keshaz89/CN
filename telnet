@@ -7,3 +7,66 @@ hostname -I  # to find the IP address
 telnet 192.168.1.110
 pw : current directory
 ls -1: list file in current directory 
+
+Installation :
+sudo apt-get install vsftpd
+sudo systemctl enable vsftpd
+sudo systemctl start vsftpd
+
+Working :
+ftp ip(bajuwale ka)
+username and pass (bajuwale ka)
+
+get filename.extension (bajuwale ki file apne me lane k lie)
+put filename.extension (bajuwale k pc me bhejne k lie)
+
+bye
+
+FTP
+Install vsftpd:
+sudo apt update
+sudo apt install vsftpd
+
+Start and enable server:
+sudo systemctl start vsftpd
+sudo systemctl enable vsftpd
+
+configure(optional):
+sudo nano /etc/vsftpd.conf
+anonymous_enable=YES
+local_enable=YES
+write_enable=YES
+pasv_min_port=10000
+pasv_max_port=10100
+
+restart
+sudo systemctl restart vsftpd
+
+Add user (if anonymous disabled)
+sudo adduser ftpuser
+sudo passwd ftpuser
+
+Open FTP Client and Connect to the Server:
+ftp 192.168.1.100
+Log In: Enter the username and password when prompted (e.g., ftpuser and its password).
+
+List files
+ls
+Change directory
+cd <directory_name>
+Add file
+put <local_file_path>
+
+put /home/user/example.txt
+Get file
+get example.txt
+Put multiple files
+mput .txt
+Get multiple files
+mget .txt
+Make directory
+mkdir <directory_name>
+Delete file
+delete <remote_file_name>
+Exit 
+bye
