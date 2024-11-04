@@ -1,0 +1,68 @@
+Here are the commands and steps to use Wireshark to understand the operation of TCP/IP layers:
+
+### Steps and Commands
+
+1. **Install Wireshark** (if not installed):
+   ```bash
+   sudo apt update
+   sudo apt install wireshark
+   ```
+
+2. **Run Wireshark**:
+   ```bash
+   sudo wireshark
+   ```
+
+3. **Capture Traffic**:
+   - Select the network interface (e.g., `eth0`, `wlan0`) and click on **Start**.
+
+4. **Filter for Ethernet Layer**:
+   - Use the filter:
+     ```
+     eth
+     ```
+
+5. **Inspect Frame Details**:
+   - Click on any captured packet to view the **Frame header**, **Frame size**, etc.
+
+6. **Filter for Data Link Layer**:
+   - Use the filter:
+     ```
+     arp
+     ```
+
+7. **Inspect ARP Details**:
+   - Check **MAC address** and **ARP bindings**.
+
+8. **Filter for Network Layer**:
+   - Use the filter:
+     ```
+     ip
+     ```
+
+9. **Inspect IP Packet Details**:
+   - View **IP header**, **fragmentation**, and **ICMP** packets with:
+     ```
+     icmp
+     ```
+
+10. **Filter for Transport Layer**:
+    - Use the filter:
+      ```
+      tcp
+      ```
+
+11. **Inspect TCP Handshake**:
+    - Analyze the TCP handshake segments (SYN, SYN-ACK, ACK).
+
+12. **Filter for Application Layer**:
+    - Use the filter:
+      ```
+      http
+      ```
+
+13. **Inspect HTTP Details**:
+    - View **HTTP header formats** and related traffic.
+
+### Stop Capturing
+- Click on the **Stop** button in Wireshark to stop capturing traffic.
