@@ -1,0 +1,16 @@
+import socket  # Import the socket module
+
+# Create a TCP socket
+client_socket = socket.socket()
+
+# Connect to the server using localhost and the specified port
+client_socket.connect(('127.0.0.1', 65432))
+
+# Send a message to the server
+client_socket.sendall('Hello from the client!'.encode())
+
+# Receive the server's response
+print(f'Received: {client_socket.recv(1024).decode()}')
+
+# Close the connection
+client_socket.close()
