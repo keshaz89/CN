@@ -1,3 +1,7 @@
+sudo apt update
+sudo apt install ns2
+create a .tcl file 
+to run the code open the terminal and type ns nameofile.tcl
 set ns [new Simulator]
 $ns color 1 Blue
 # set nam output file
