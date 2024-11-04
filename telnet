@@ -1,0 +1,9 @@
+sudo apt update
+sudo apt install telnet telnetd
+sudo systemctl start telnet
+sudo systemctl enable telnet
+sudo ufw allow 23/tcp
+hostname -I  # to find the IP address
+telnet 192.168.1.110
+pw : current directory
+ls -1: list file in current directory 
