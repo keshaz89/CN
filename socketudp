@@ -1,0 +1,28 @@
+import socket  # Import the socket library
+
+# Create and bind UDP socket
+udp_server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+udp_server_socket.bind(('127.0.0.1', 65432))  # Localhost and port
+
+print("UDP server waiting for messages...")
+
+while True:
+    message, client_address = udp_server_socket.recvfrom(1024)  # Receive message
+    print(f"Received: {message.decode()} from {client_address}")
+    udp_server_socket.sendto(b"Message received", client_address)  # Send response
+
+
+
+import socket  # Import the socket library
+
+# Create UDP socket
+udp_client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_address = ('127.0.0.1', 65432)  # Localhost and port
+
+message = "Hello, UDP server!"  # Prepare message
+udp_client_socket.sendto(message.encode(), server_address)  # Send message
+
+response, _ = udp_client_socket.recvfrom(1024)  # Receive response
+print(f"Response: {response.decode()}")
+
+udp_client_socket.close()  # Close socket
